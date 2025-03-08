@@ -1,9 +1,9 @@
-
+import AIAssistants from "./(main)/ai-assistants/page";
 
 export default function Home() {
   return (
-    <div>
-      
-    </div>
+    <main>
+      <AIAssistants />
+    </main>
   );
 }
