@@ -38,7 +38,6 @@ function AIAssistants() {
     const result = await convex.query(api.userAiAssistants.GetAllUserAssistants, {
       uid: user._id
     });
-    console.log(result)
     if(result.length > 0){
       router.replace('/workspace')
       return;
@@ -58,15 +57,30 @@ function AIAssistants() {
   const isAssistantSelected = (assistant: ASSISTANT) =>
     selectedAssistant.some((item) => item.id === assistant.id);
 
-  const onClickContinue = async ()=>{
+  const onClickContinue = async () => {
+
+    if (!user?._id) {
+      return;
+    }
+  
     setLoading(true);
-    const result = await insertAssistant({
-      records: selectedAssistant,
-      uid: user?.id
-    });
+  
+    try {
+      const result = await insertAssistant({
+        records: selectedAssistant,
+        uid: user._id,  
+      });
+      
+      if (result) {
+        router.replace("/workspace");
+      }
+    } catch (error) {
+      console.error("Error inserting assistant:", error);
+    }
+  
     setLoading(false);
-    console.log(result);
-  }
+  };
+  
 
   return (
     <div className="px-10 mt-20 md:px-28 lg:px-36 xl:px-48">
