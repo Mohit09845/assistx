@@ -1,5 +1,6 @@
 import React from 'react'
 import AssistantList from './_components/AssistantList'
+import AssistantSettings from './_components/AssistantSettings'
 
 function Workspace() {
   return (
@@ -12,7 +13,7 @@ function Workspace() {
                 CHAT UI
             </div>
             <div className='hidden lg:block'>
-                SETTINGS
+                <AssistantSettings/>
             </div>
         </div>
     </div>

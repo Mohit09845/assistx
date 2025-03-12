@@ -10,6 +10,7 @@ export const InsertSelectedAssistantMutation = mutation({
         const insertedIds = await Promise.all(
             args.records.map(async(record: any)=> await ctx.db.insert('userAiAssistants', {
                 ...record,
+                aiModelId: 'Google: Gemini 2.0 Flash',
                 uid:args.uid
             }))
         );
