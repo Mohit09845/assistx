@@ -127,7 +127,6 @@ function AIAssistants() {
                 isAssistantSelected(assistant) ? "border-blue-500" : ""
               }`}
             >
-              {/* Controlled Checkbox */}
               <Checkbox
                 className="absolute m-2"
                 checked={isAssistantSelected(assistant)}

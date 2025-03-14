@@ -1,5 +1,5 @@
 import { mutation, query } from "./_generated/server";
-import {v} from "convex/values";
+import {convexToJson, v} from "convex/values";
 
 export const InsertSelectedAssistantMutation = mutation({
     args: {
@@ -27,5 +27,29 @@ export const GetAllUserAssistants = query({
         const result = await ctx.db.query('userAiAssistants').filter(q=>q.eq(q.field('uid'),args.uid)).collect();
 
         return result;
+    }
+})
+
+export const UpdateuserAiAssistant = mutation({
+    args: {
+        id: v.id('userAiAssistants'),
+        userInstruction: v.string(),
+        aiModelId: v.string()
+    },
+    handler: async(ctx, args) => {
+        const result = await ctx.db.patch(args.id,{
+            aiModelId: args.aiModelId,
+            userInstruction: args.userInstruction
+        })
+        return result;
+    }
+})
+
+export const DeleteAssistant = mutation({
+    args: {
+        id: v.id('userAiAssistants')
+    },
+    handler: async(ctx, args) => {
+        await ctx.db.delete(args.id)
     }
 })

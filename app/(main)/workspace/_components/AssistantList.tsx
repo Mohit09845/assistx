@@ -9,6 +9,7 @@ import { api } from "@/convex/_generated/api";
 import { ASSISTANT } from "../../ai-assistants/page";
 import Image from "next/image";
 import { AssistantContext } from "@/context/AssistantContext";
+import { BlurFade } from "@/components/magicui/blur-fade";
 
 function AssistantList() {
   const { user } = useContext(AuthContext);
@@ -17,8 +18,8 @@ function AssistantList() {
   const { assistant, setAssistant } = useContext(AssistantContext);
 
   useEffect(() => {
-    if (user) GetUserAssistants();
-  }, [user]);
+    user && GetUserAssistants();
+  }, [user && assistant === null]);
 
   const GetUserAssistants = async () => {
     const result = await convex.query(
@@ -29,7 +30,8 @@ function AssistantList() {
   };
 
   return (
-    <div className="p-5 bg-gray-100 dark:bg-gray-800 border-r h-screen relative">
+    <div className="p-5 bg-gray-100 dark:bg-gray-800 border-r h-screen flex flex-col">
+      {/* Header */}
       <h2 className="font-bold text-black dark:text-white text-lg">
         Your Personal AI Assistants
       </h2>
@@ -39,35 +41,33 @@ function AssistantList() {
         placeholder="Search"
       />
 
-      <div className="mt-5">
-        {assistantList.map((assist, index) => (
-          <div
-            key={index}
-            className={`p-3 flex gap-3 items-center hover:bg-gray-300 dark:hover:bg-gray-600 cursor-pointer rounded-xl mt-2 ${
-              assist.id === assistant?.id ? "bg-gray-200 dark:bg-gray-700" : ""
-            }`}
-            onClick={() => setAssistant(assist)}
-          >
-            <Image
-              src={assist.image}
-              alt={assist.name}
-              height={60}
-              width={60}
-              className="rounded-xl w-[60px] h-[60px] object-cover"
-            />
-            <div>
-              <h2 className="font-bold text-black dark:text-white">
-                {assist.name}
-              </h2>
-              <h2 className="text-gray-700 dark:text-gray-300 text-sm">
-                {assist.title}
-              </h2>
+      {/* Assistants List - Make it Scrollable */}
+      <div className="mt-5 overflow-y-auto flex-1">
+        {assistantList.map((assist) => (
+          <BlurFade key={assist.id} delay={0.25 * assist.id * 0.05} inView>
+            <div
+              className={`p-3 flex gap-3 items-center hover:bg-gray-300 dark:hover:bg-gray-600 cursor-pointer rounded-xl mt-2 ${
+                assist.id === assistant?.id ? "bg-gray-200 dark:bg-gray-700" : ""
+              }`}
+              onClick={() => setAssistant(assist)}
+            >
+              <Image
+                src={assist.image}
+                alt={assist.name}
+                height={60}
+                width={60}
+                className="rounded-xl w-[60px] h-[60px] object-cover"
+              />
+              <div>
+                <h2 className="font-bold text-black dark:text-white">{assist.name}</h2>
+                <h2 className="text-gray-700 dark:text-gray-300 text-sm">{assist.title}</h2>
+              </div>
             </div>
-          </div>
+          </BlurFade>
         ))}
       </div>
 
-      <div className="absolute bottom-10 flex gap-3 items-center hover:bg-gray-200 w-[87%] p-2 rounded-xl cursor-pointer">
+      <div className="mt-auto flex gap-3 items-center hover:bg-gray-200 dark:hover:bg-gray-700 w-full p-2 rounded-xl cursor-pointer">
         {user?.picture ? (
           <Image
             src={user.picture}
@@ -78,7 +78,7 @@ function AssistantList() {
           />
         ) : (
           <Image
-            src="/default-avatar.png" 
+            src="/default-avatar.png"
             alt="default user"
             width={35}
             height={35}
@@ -87,7 +87,7 @@ function AssistantList() {
         )}
         <div>
           <h2 className="font-bold">{user?.name}</h2>
-          <h2 className="text-gray-400 text-sm">{user?.orderID ? 'Pro Plan' : 'Free Plan'}</h2>
+          <h2 className="text-gray-400 text-sm">{user?.orderID ? "Pro Plan" : "Free Plan"}</h2>
         </div>
       </div>
     </div>
