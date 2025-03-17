@@ -50,7 +50,8 @@ function ChatUi() {
 
     const result = await axios.post("/api/eden-ai-model", {
       provider: AIModel?.edenAi,
-      userInput: userInput,
+      userInput: userInput + ":" + assistant?.instruction + ":" + assistant?.userInstruction,
+      aiResponse: messages[messages?.length - 1]?.content
     });
     setLoading(false);
     setMessages(prev => prev.slice(0,-1));

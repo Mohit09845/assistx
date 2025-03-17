@@ -10,6 +10,7 @@ import { ASSISTANT } from "../../ai-assistants/page";
 import Image from "next/image";
 import { AssistantContext } from "@/context/AssistantContext";
 import { BlurFade } from "@/components/magicui/blur-fade";
+import AddNewAssistant from "./AddNewAssistant";
 
 function AssistantList() {
   const { user } = useContext(AuthContext);
@@ -35,7 +36,9 @@ function AssistantList() {
       <h2 className="font-bold text-black dark:text-white text-lg">
         Your Personal AI Assistants
       </h2>
-      <Button className="w-full mt-3">+ Add New Assistant</Button>
+      <AddNewAssistant>
+        <Button className="w-full mt-3">+ Add New Assistant</Button>
+      </AddNewAssistant>
       <Input
         className="bg-white dark:bg-gray-700 mt-3 text-black dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
         placeholder="Search"
